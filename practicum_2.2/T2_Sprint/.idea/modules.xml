@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/T2_Sprint.iml" filepath="$PROJECT_DIR$/.idea/modules/T2_Sprint.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/T2_Sprint-build.iml" filepath="$PROJECT_DIR$/.idea/modules/T2_Sprint-build.iml" />
+    </modules>
+  </component>
+</project>
