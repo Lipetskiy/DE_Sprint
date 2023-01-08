@@ -115,7 +115,7 @@ VALUES
 Добавьте необходимую информацию в соответствующие таблицы. */
 
 INSERT INTO department
-(dep_title, boss_name, stuff_size)
+(dep_title, boss_name, staff_size)
 VALUES
 ('Отдел Интелектуального анализа данных', 'Занудов Борис Афанасьевич', 3);
 
