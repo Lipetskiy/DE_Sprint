@@ -5,7 +5,7 @@
 
 CREATE TABLE IF NOT EXISTS departments
 (
-    department_id SERIAL START WITH 1 PRIMARY KEY,
+    department_id SERIAL NOT NULL PRIMARY KEY,
     dep_title VARCHAR(128) NOT NULL,
     boss_name VARCHAR(128) NOT NULL ,
     staff_size INT NOT NULL
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS employee_main
 
     CONSTRAINT department
         FOREIGN KEY (department_id)
-        REFERENCES  department(department_id)
+        REFERENCES  departments(department_id)
 );
 
 COMMENT ON TABLE employee_main
@@ -47,17 +47,17 @@ CREATE TABLE IF NOT EXISTS employee_scores
 (
     score_id SERIAL NOT NULL PRIMARY KEY ,
     employee_id INT,
-    first_quarter VARCHAR(1) CHECK (score.first_quarter ~ '[A-E]'),
-    second_quarter VARCHAR(1) CHECK (score.second_quarter ~ '[A-E]'),
-    third_quarter VARCHAR(1) CHECK (score.third_quarter ~ '[A-E]'),
-    fourth_quarter VARCHAR(1) CHECK (score.fourth_quarter ~ '[A-E]'),
+    first_quarter VARCHAR(1) CHECK (employee_scores.first_quarter ~ '[A-E]'),
+    second_quarter VARCHAR(1) CHECK (employee_scores.second_quarter ~ '[A-E]'),
+    third_quarter VARCHAR(1) CHECK (employee_scores.third_quarter ~ '[A-E]'),
+    fourth_quarter VARCHAR(1) CHECK (employee_scores.fourth_quarter ~ '[A-E]'),
     CONSTRAINT employee_id
         FOREIGN KEY (employee_id)
         REFERENCES employee_main(employee_id)
 );
 
 COMMENT ON TABLE employee_scores
-    IS 'Рейтинговые оценки сотрудника';
+    IS 'Поквартальные рейтинговые оценки сотрудников';
 
 
 
