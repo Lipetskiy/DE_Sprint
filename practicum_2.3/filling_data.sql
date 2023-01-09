@@ -3,7 +3,7 @@
 
 -- Отдел; Руководитель; Кол-во сотрудников, включая руководителя
 
-INSERT INTO department
+INSERT INTO departments
 (dep_title, boss_name, staff_size)
 VALUES
     ('Бухгалтерия', 'Сафонова Марина Дмитриевна', 4),
@@ -16,7 +16,7 @@ VALUES
 
 -- Информация о сотрудниках
 
-INSERT INTO employee
+INSERT INTO employee_main
 (full_name, birthday, employment_date, position, experience_level, salary, department_id, driver_license)
 VALUES
 ('Сафонова Марина Дмитриевна', '1959.11.24', '1999.02.14', 'Главный бухгалтер', 'Not applicable', 355000, 1, 'False' ),
@@ -64,7 +64,7 @@ VALUES
 
 -- Поквартальные оценки качества работыкаждого сотрудника
 
-INSERT INTO score
+INSERT INTO employee_scores
 (employee_id, first_quarter, second_quarter, third_quarter, fourth_quarter)
 VALUES
 (1, 'A', 'A', 'A', 'A'),
@@ -114,12 +114,12 @@ VALUES
 На начальном этапе в команду наняли одного руководителя отдела и двух сотрудников. 
 Добавьте необходимую информацию в соответствующие таблицы. */
 
-INSERT INTO department
+INSERT INTO departments
 (dep_title, boss_name, staff_size)
 VALUES
 ('Отдел Интелектуального анализа данных', 'Занудов Борис Афанасьевич', 3);
 
-INSERT INTO employee
+INSERT INTO employee_main
 (full_name, birthday, employment_date, position, experience_level, salary, department_id, driver_license)
 VALUES
 ('Занудов Борис Афанасьевич', '1974.10.25', '2022.10.12', 'Начальник Отдела Интелектуального анализа данных', 'Lead', 240000, 1, 'True' ),
@@ -132,7 +132,7 @@ VALUES
 SELECT employee_id, 
        full_name, 
        SUM((NOW()::date - employment_date)/7) AS experience_of_work
-FROM employee
+FROM employee_main
 GROUP BY employee_id, 
          full_name;
 
@@ -141,7 +141,7 @@ GROUP BY employee_id,
 SELECT employee_id, 
        full_name, 
        SUM((NOW()::date - employment_date)/7) AS experience_of_work
-FROM employee
+FROM employee_main
 GROUP BY employee_id, 
          full_name
 LIMIT 3;
@@ -149,13 +149,13 @@ LIMIT 3;
 /* 6.3 Уникальный номер сотрудников - водителей */
 
 SELECT employee_id
-FROM employee
+FROM employee_main
 WHERE driver_license = 'True'
 
 /* 6.4 Выведите номера сотрудников, которые хотя бы за 1 квартал получили оценку D или E */
 
-SELECT employee.employee_id
-FROM employee
+SELECT employee_main.employee_id
+FROM employee_main
 JOIN score ON employee.employee_id = score.score_id
 WHERE first_quarter LIKE '%D%' OR first_quarter LIKE  '%E%' OR
       second_quarter LIKE '%D%' OR second_quarter LIKE  '%E%' OR
@@ -165,12 +165,12 @@ WHERE first_quarter LIKE '%D%' OR first_quarter LIKE  '%E%' OR
 /* 6.5 Выведите самую высокую зарплату в компании. */
 
 SELECT MAX(salary)
-from employee;
+from employee_main;
 
 /* 6.6* Выведите название самого крупного отдела */
 
 SELECT dep_title
-FROM department
+FROM departments
 ORDER BY staff_size DESC
 LIMIT 1;
 
@@ -179,7 +179,7 @@ LIMIT 1;
 SELECT employee_id, 
        full_name, 
        SUM((NOW()::date - employment_date)/7) AS experience_of_work
-FROM employee
+FROM employee_main
 GROUP BY  employee_id
 ORDER BY employment_date;
 
@@ -187,31 +187,31 @@ ORDER BY employment_date;
 
 SELECT  experience_level, 
         AVG(salary)
-FROM employee
+FROM employee_main
 WHERE experience_level = 'Lead'
 GROUP BY experience_level;
 
 SELECT  experience_level, 
         AVG(salary)
-FROM employee
+FROM employee_main
 WHERE experience_level = 'Senior'
 GROUP BY experience_level;
 
 SELECT  experience_level, 
         AVG(salary)
-FROM employee
+FROM employee_main
 WHERE experience_level = 'Middle'
 GROUP BY experience_level;
 
 SELECT  experience_level, 
         AVG(salary)
-FROM employee
+FROM employee_main
 WHERE experience_level = 'Junior'
 GROUP BY experience_level;
 
 SELECT  experience_level, 
         AVG(salary)
-FROM employee
+FROM employee_main
 WHERE experience_level = 'Not applicable'
 GROUP BY experience_level;
 
@@ -226,7 +226,7 @@ GROUP BY experience_level;
 Соответственно, сотрудник с оценками А, В, С, D – должен получить коэффициент 1.2. */
 
 SELECT full_name, (
-    SELECT first_score * second_score * third_score * fourth_score AS bonus
+    SELECT first_score * second_score * third_score * fourth_score AS score_bonus
     FROM (
         SELECT *,
         CASE
@@ -260,7 +260,7 @@ SELECT full_name, (
             WHEN fourth_quarter = 'D' THEN 0.9
             WHEN fourth_quarter = 'E' THEN 0.8
             ELSE 1 END AS fourth_score
-        FROM score
-        WHERE (score.employee_id = employee.employee_id)
+        FROM employee_scores
+        WHERE (employee_scores.employee_id = employee_main.employee_id)
     )quarter_score
 ) FROM employee
