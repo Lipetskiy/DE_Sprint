@@ -45,7 +45,7 @@ COMMENT ON TABLE employee_main
 
 CREATE TABLE IF NOT EXISTS employee_scores
 (
-    score_id SERIAL NOT NULL PRIMARY KEY ,
+    score_id SERIAL NOT NULL PRIMARY KEY,
     employee_id INT,
     first_quarter VARCHAR(1) CHECK (employee_scores.first_quarter ~ '[A-E]'),
     second_quarter VARCHAR(1) CHECK (employee_scores.second_quarter ~ '[A-E]'),
