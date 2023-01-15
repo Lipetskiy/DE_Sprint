@@ -1,0 +1,72 @@
+[cloudera@quickstart ~]$ pws
+bash: pws: command not found
+[cloudera@quickstart ~]$ ls -l
+total 188
+-rwxrwxr-x 1 cloudera cloudera  5387 Oct 23  2017 cloudera-manager
+-rwxrwxr-x 1 cloudera cloudera  9964 Oct 23  2017 cm_api.py
+drwxrwxr-x 3 cloudera cloudera  4096 Jan 15 06:57 Desktop
+drwxrwxr-x 4 cloudera cloudera  4096 Jan 15 06:57 Documents
+drwxr-xr-x 2 cloudera cloudera  4096 Jan 14 18:28 Downloads
+drwxrwsr-x 9 cloudera cloudera  4096 Feb 19  2015 eclipse
+-rw-rw-r-- 1 cloudera cloudera 53655 Oct 23  2017 enterprise-deployment.json
+-rw-rw-r-- 1 cloudera cloudera 50515 Oct 23  2017 express-deployment.json
+-rwxrwxr-x 1 cloudera cloudera  5007 Oct 23  2017 kerberos
+drwxrwxr-x 2 cloudera cloudera  4096 Oct 23  2017 lib
+drwxr-xr-x 2 cloudera cloudera  4096 Jan 14 18:28 Music
+-rwxrwxr-x 1 cloudera cloudera  4228 Oct 23  2017 parcels
+drwxr-xr-x 2 cloudera cloudera  4096 Jan 14 18:28 Pictures
+drwxr-xr-x 2 cloudera cloudera  4096 Jan 14 18:28 Public
+drwxr-xr-x 2 cloudera cloudera  4096 Jan 14 18:28 Templates
+drwxr-xr-x 2 cloudera cloudera  4096 Jan 14 18:28 Videos
+drwxrwxr-x 4 cloudera cloudera  4096 Oct 23  2017 workspace
+[cloudera@quickstart ~]$ cd Documents
+[cloudera@quickstart Documents]$ ls -l
+total 3000
+-rw-rw-r-- 1 cloudera cloudera   5051 Oct 23  2017 cloudera-manager.html
+drwxrwxr-x 2 cloudera cloudera   4096 Oct 23  2017 css
+drwxrwxr-x 2 cloudera cloudera   4096 Oct 23  2017 img
+-rw-rw-rw- 1 cloudera cloudera 736519 Jan 15 06:45 vim_t1.txt
+-rw-rw-rw- 1 cloudera cloudera 770324 Jan 15 06:45 vim_t2.txt
+-rw-rw-rw- 1 cloudera cloudera 843205 Jan 15 06:45 vim_t3.txt
+-rw-rw-rw- 1 cloudera cloudera 697960 Jan 15 06:45 vim_t4.txt
+[cloudera@quickstart Documents]$ hdfs dfs -ls
+[cloudera@quickstart Documents]$ hdfs dfs -copyFromLocal  /home/cloudera/Documents/vim_t1.txt
+[cloudera@quickstart Documents]$ hdfs dfs -copyFromLocal  /home/cloudera/Docuts/vim_t2.txt
+[cloudera@quickstart Documents]$ hdfs dfs -copyFromLocal  /home/cloudera/Documents/vim_t3.txt
+[cloudera@quickstart Documents]$ hdfs dfs -copyFromLocal  /home/cloudera/Documents/vim_t4.txt
+[cloudera@quickstart Documents]$ hdfs dfs -ls
+Found 4 items
+-rw-r--r--   1 cloudera cloudera     736519 2023-01-15 07:02 vim_t1.txt
+-rw-r--r--   1 cloudera cloudera     770324 2023-01-15 07:02 vim_t2.txt
+-rw-r--r--   1 cloudera cloudera     843205 2023-01-15 07:03 vim_t3.txt
+-rw-r--r--   1 cloudera cloudera     697960 2023-01-15 07:03 vim_t4.txt
+[cloudera@quickstart Documents]$ hdfs dfs -getmerge /user/cloudera  /home/clora/Documents/merge.txt
+[cloudera@quickstart Documents]$ ls -l
+total 5980
+-rw-rw-r-- 1 cloudera cloudera    5051 Oct 23  2017 cloudera-manager.html
+drwxrwxr-x 2 cloudera cloudera    4096 Oct 23  2017 css
+drwxrwxr-x 2 cloudera cloudera    4096 Oct 23  2017 img
+-rw-r--r-- 1 cloudera cloudera 3048008 Jan 15 07:11 merge.txt
+-rw-rw-rw- 1 cloudera cloudera  736519 Jan 15 06:45 vim_t1.txt
+-rw-rw-rw- 1 cloudera cloudera  770324 Jan 15 06:45 vim_t2.txt
+-rw-rw-rw- 1 cloudera cloudera  843205 Jan 15 06:45 vim_t3.txt
+-rw-rw-rw- 1 cloudera cloudera  697960 Jan 15 06:45 vim_t4.txt
+[cloudera@quickstart Documents]$ hdfs dfs -copyFromLocal  /home/cloudera/Documents/merge.txt
+[cloudera@quickstart Documents]$ hdfs dfs -chmod 755 merge.txt
+[cloudera@quickstart Documents]$ hdfs dfs -ls
+Found 5 items
+-rwxr-xr-x   1 cloudera cloudera    3048008 2023-01-15 07:15 merge.txt
+-rw-r--r--   1 cloudera cloudera     736519 2023-01-15 07:02 vim_t1.txt
+-rw-r--r--   1 cloudera cloudera     770324 2023-01-15 07:02 vim_t2.txt
+-rw-r--r--   1 cloudera cloudera     843205 2023-01-15 07:03 vim_t3.txt
+-rw-r--r--   1 cloudera cloudera     697960 2023-01-15 07:03 vim_t4.txt
+[cloudera@quickstart Documents]$ hdfs dfs -du -h /user/cloudera/merge.txt
+2.9 M  2.9 M  /user/cloudera/merge.txt
+[cloudera@quickstart Documents]$ hdfs dfs -setrep -w 2 /user/cloudera/merge.txt
+Replication 2 set: /user/cloudera/merge.txt
+Waiting for /user/cloudera/merge.txt ..........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+[cloudera@quickstart ~]$ hdfs dfs -du -h /user/cloudera/merge.txt 
+2.9 M  5.8 M  /user/cloudera/merge.txt
+[cloudera@quickstart Documents]$ hadoop fs -cat /user/cloudera/merge.txt | wc -l
+10272
+[cloudera@quickstart Documents]$ 
